@@ -4,6 +4,8 @@ import exchange from '@/components/exchange/exchange';
 import drawing from '@/components/drawing/drawing';
 import my from '@/components/my/my';
 import set from '@/components/set/set';
+import password from '@/components/password/password';
+import orderlist from '@/components/orderlist/orderlist';
 
 Vue.use(Router);
 
@@ -25,5 +27,13 @@ export default new Router({
     path: '/set',
     name: 'set',
     component: set,
+  }, {
+    path: '/password',
+    name: 'password',
+    component: password,
+  }, {
+    path: '/orderlist',
+    name: 'orderlist',
+    component: orderlist,
   }],
 });

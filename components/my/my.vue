@@ -6,7 +6,7 @@
         </blur>
         <card class="card">
             <div slot="content" class="card-content">
-                <div class="vux-1px-r">
+                <div class="vux-1px-r" @click="goToOrder('today')">
                     <span>1130</span>
                     <br/> 今日订单
                 </div>
@@ -54,6 +54,13 @@ export default {
         Card,
         Group,
         Cell,
+    },
+    methods: {
+        goToOrder(val) {
+            if (val === 'today') {
+                this.$router.push({ name: 'orderlist', params: { ordertype: val } });
+            }
+        },
     },
 };
 </script>
