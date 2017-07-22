@@ -6,6 +6,7 @@ import my from '@/components/my/my';
 import set from '@/components/set/set';
 import password from '@/components/password/password';
 import orderlist from '@/components/orderlist/orderlist';
+import protcal from '@/components/protcal/protcal';
 
 Vue.use(Router);
 
@@ -35,5 +36,9 @@ export default new Router({
     path: '/orderlist',
     name: 'orderlist',
     component: orderlist,
+  }, {
+    path: '/protcal',
+    name: 'protcal',
+    component: protcal,
   }],
 });

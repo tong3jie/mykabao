@@ -42,7 +42,6 @@ export default {
     },
     methods: {
         passwordChange() {
-            console.log('1111111111111111111111');
             if (this.pwdTyep === 'password') {
                 this.pwdTyep = 'text';
             } else {

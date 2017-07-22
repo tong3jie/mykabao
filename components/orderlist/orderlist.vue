@@ -3,9 +3,9 @@
         <x-header>{{headerTitle}}</x-header>
         <group>
             <cell title="今日订单" value="共计1024个"></cell>
-            <cell-form-preview :list="orderlist"></cell-form-preview>
+            <cell-form-preview :list="orderTotal"></cell-form-preview>
         </group>
-        <form-preview :header-label="$t('付款金额')" header-value="¥2400.00" :body-items="list" :footer-buttons="buttons1"></form-preview>
+        <form-preview v-for="(order,index) in orderLists" :key="index" header-label="金额" :header-value="`${order.price}元`" :body-items="order.order" :footer-buttons="deletOrder" :name="index"></form-preview>
     </div>
 </template>
 
@@ -23,7 +23,7 @@ export default {
     },
     data() {
         return {
-            orderlist: [{
+            orderTotal: [{
                 label: '成功',
                 value: '800',
             }, {
@@ -34,6 +34,50 @@ export default {
                 value: '24',
             }],
             headerTitle: '',
+            orderLists: [{
+                price: 100,
+                order: [{
+                    label: '订单编号',
+                    value: '58fda0b7f6e16911c5c69f82',
+                }, {
+                    label: '卡号',
+                    value: '1111111111111111111111111',
+                }, {
+                    label: '时间',
+                    value: '2017-04-24 14:52:39',
+                }, {
+                    label: '兑换结果',
+                    value: 4,
+                }, {
+                    label: '兑换金额',
+                    value: '97元',
+                }],
+            }, {
+                price: 100,
+                order: [{
+                    label: '订单编号',
+                    value: '58fda0b7f6e16911c5c69f82',
+                }, {
+                    label: '卡号',
+                    value: '1111111111111111111111111',
+                }, {
+                    label: '时间',
+                    value: '2017-04-24 14:52:39',
+                }, {
+                    label: '兑换结果',
+                    value: 4,
+                }, {
+                    label: '兑换金额',
+                    value: '97元',
+                }],
+            }],
+            deletOrder: [{
+                style: 'primary',
+                text: '删除',
+                onButtonClick: (name) => {
+                    console.log(`deleOrder button even is ${name}`);
+                },
+            }],
         };
     },
     created() {

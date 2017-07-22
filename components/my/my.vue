@@ -1,5 +1,6 @@
 <template>
-    <div class="my-swapper">
+    <div class="my-swapper" >
+        <x-header :left-options="{showBack:this.$route.path !== '/my'}" slot="header" title="我的" style="width:110%;margin-left:-5%;margin-right:-5%;"></x-header>
         <blur class="blur" :blur-amount=1 url="https://static.pexels.com/photos/512861/pexels-photo-512861.jpeg" :height=120>
             <img src="https://static.pexels.com/photos/512861/pexels-photo-512861.jpeg">
             <span>让爱慢慢成册</span>
@@ -45,7 +46,7 @@
 
 
 <script>
-import { Blur, Card, Group, Cell } from 'vux';
+import { Blur, Card, Group, Cell, XHeader } from 'vux';
 
 export default {
     name: 'my',
@@ -54,6 +55,7 @@ export default {
         Card,
         Group,
         Cell,
+        XHeader,
     },
     methods: {
         goToOrder(val) {
@@ -77,10 +79,10 @@ export default {
         margin-right: -5%;
         display: flex;
         flex-direction: row;
-        justify-content: flex-start;
+        justify-content: center;
         align-content: center;
         img {
-            margin: 31px 20px 31px 10px;
+            margin: 31px 20px 31px 0;
             width: 50px;
             height: 50px;
             border-radius: 50%;

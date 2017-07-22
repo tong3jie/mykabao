@@ -1,9 +1,7 @@
 <template>
     <div class="drawing-swapper">
+        <x-header :left-options="{showBack:this.$route.path !== '/drawing'}" slot="header" title="提现" style="width:110%;margin-left:-5%;margin-right:-5%;"></x-header>
         <divider>请选择到账类型</divider>
-        <!-- <div class="paytype">
-                                                <img :class="paytype === item.name ? '' : 'payType-item-default'" v-for="item in payTypeList" :key="item.name" :src="item.src" @click="paySelect(item.name)"></img>
-                                            </div> -->
         <checker class="paytype" v-model="paytype">
             <checker-item class="img" :class="paytype === item.name ? '' : 'payType-item-default'" v-for="item in payTypeList" :key="item.name" :value="item.name" :disabled="item.disabled">
                 <img :src="item.src">
@@ -12,17 +10,17 @@
         </checker>
         <divider style="margin-top:5%">请输入提款金额</divider>
         <div class="money">
-            <spn class="sign">￥</spn>
+            <span class="sign">￥</span>
             <input type="number" v-model="money" />
             </br>
-            <spn class="txt">可提现余额{{balance}}元</spn>
+            <span class="txt">可提现余额{{balance}}元</span>
         </div>
         <x-button class="button" type="primary" text="提交" action-type="button"></x-button>
     </div>
 </template>
 
 <script>
-import { Divider, Checker, CheckerItem, XInput, XButton } from 'vux';
+import { Divider, Checker, CheckerItem, XInput, XButton, XHeader } from 'vux';
 
 const wechatUrl = require('./wechat.svg');
 
@@ -38,6 +36,7 @@ export default {
         CheckerItem,
         XInput,
         XButton,
+        XHeader,
     },
     data() {
         return {
