@@ -3,23 +3,39 @@
         <x-header :left-options="{showBack:this.$route.path !== '/'}" slot="header" title="兑换" style="width:110%;margin-left:-5%;margin-right:-5%;"></x-header>
         <swiper loop auto :list="SwiperList" height="110px" class="swiper">
         </swiper>
-        <divider>请选择兑换的价格</divider>
-        <checker v-model="piceSelected" default-item-class="checker-default" selected-item-class="checker-selected" class="checker">
+        <button-tab v-model="exchangeTypeIndex" class="buttonTab">
+            <button-tab-item>单张兑换</button-tab-item>
+            <button-tab-item>批量兑换</button-tab-item>
+        </button-tab>
+        <divider>{{this.exchangeTypeIndex === 0 ? '请选择兑换的价格':'请输入您要兑换的卡号和密码'}}</divider>
+        <checker v-if="this.exchangeTypeIndex === 0" v-model="piceSelected" default-item-class="checker-default" selected-item-class="checker-selected" class="checker">
             <checker-item v-for="price in costSizes" :key="price" :value="price">￥{{price}}</checker-item>
         </checker>
-        <div v-if="piceSelected === ''? false : true" class="orderOff">
+        <div v-if="piceSelected === ''? false : true && this.exchangeTypeIndex === 0" class="orderOff">
             <span class="mon">预计到账：
                 <p style="color:red">{{(piceSelected*0.97).toFixed(2)}}元</p>
             </span>
             <span class="off">专享折扣：
                 <p style="color:red">97折</p>
             </span>
-        </div>        
-        <group label-width="2em" label-margin-right="2em" label-align="right" gutter="10%">
+        </div>
+        <group v-if="this.exchangeTypeIndex === 0" label-width="2em" label-margin-right="2em" label-align="right" gutter="10%">
             <x-input type="tel" title="卡&nbsp;&nbsp;&nbsp;&nbsp;号" placeholder="充值卡卡号" v-model="cardNO"></x-input>
             <x-input type="tel" title="密&nbsp;&nbsp;&nbsp;&nbsp;码" placeholder="充值卡密码" v-model="cardPW"></x-input>
         </group>
-        <x-button class="button" type="primary" text="提交" action-type="button"></x-button>
+        <group v-if="this.exchangeTypeIndex === 1">
+            <div style="background-color: #F4F4F4;font-size:12px;border-bottom:15px;">
+                <span>1.每行请输入一张充值卡卡号和密码，中间以“|”分开，</span>
+                <br/>
+                <span>2.每次最多提交5~100张</span>
+                <br/>
+                <span>3.批量提交有一定延迟，且勿重复提交</span>
+                <br/>
+            </div>
+            <x-textarea v-model="batchCards" placeholder="卡号和密码中间以“|”分开"></x-textarea>
+        </group>
+        <toast v-model="warnShow" is-show-mask  position="default" :text="warnContent" type="text">{{warnContent}}</toast>
+        <x-button slot="default" class="button" type="primary" text="提交" action-type="button" @click.native="submit"></x-button>
         <div class="protcal">
             <check-icon :value.sync="agree" type="plain" class="checkicon">同意</check-icon>
             <span style="color:blue;line-height: 23px;" @click="goToProtcal">《话费提现服务协议》</span>
@@ -28,7 +44,7 @@
 </template>
 
 <script>
-import { Swiper, Checker, CheckerItem, Divider, XInput, Group, XButton, XHeader, CheckIcon } from 'vux';
+import { Swiper, Checker, CheckerItem, Divider, XInput, Group, XButton, XHeader, CheckIcon, ButtonTab, ButtonTabItem, XTextarea, Toast } from 'vux';
 
 export default {
     name: 'exchange',
@@ -42,6 +58,10 @@ export default {
         XButton,
         XHeader,
         CheckIcon,
+        ButtonTab,
+        ButtonTabItem,
+        XTextarea,
+        Toast,
     },
     data() {
         return {
@@ -63,11 +83,30 @@ export default {
             cardNO: '',
             cardPW: '',
             agree: true,
+            exchangeTypeIndex: 0,
+            batchCards: '',
+            warnShow: false,
+            warnContent: '',
         };
     },
     methods: {
         goToProtcal() {
             this.$router.push({ name: 'protcal' });
+        },
+        submit() {
+            if (this.agree === false) {
+                this.warnShow = true;
+                this.warnContent = '请同意《话费提现服务协议》';
+            } else if (this.piceSelected === '' && this.exchangeTypeIndex === 0) {
+                this.warnShow = true;
+                this.warnContent = '请选择您要兑换卡的面值';
+            } else if (this.cardNO === '' && this.exchangeTypeIndex === 0) {
+                this.warnShow = true;
+                this.warnContent = '请输入卡号';
+            } else if (this.cardPW === '' && this.exchangeTypeIndex === 0) {
+                this.warnShow = true;
+                this.warnContent = '请输入卡密';
+            }
         },
     },
 };
@@ -83,6 +122,9 @@ export default {
         width: 110%;
         margin-left: -5%;
         margin-right: -5%;
+    }
+    .buttonTab {
+        margin-top: 5px;
     }
     .checker {
         text-align: center;
